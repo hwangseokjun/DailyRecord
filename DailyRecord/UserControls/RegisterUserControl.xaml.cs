@@ -1,5 +1,4 @@
-﻿using DailyRecord.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,14 +16,13 @@ using System.Windows.Shapes;
 namespace DailyRecord.UserControls
 {
     /// <summary>
-    /// TextEditorUserControl.xaml에 대한 상호 작용 논리
+    /// RegisterUserControl.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class TextEditorUserControl : UserControl
+    public partial class RegisterUserControl : UserControl
     {
-        public TextEditorUserControl()
+        public RegisterUserControl()
         {
             InitializeComponent();
-            DataContext = new TextEditorUserControlViewModel(richTextBox);
         }
     }
 }

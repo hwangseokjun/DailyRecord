@@ -1,32 +1,111 @@
 ﻿using DailyRecord.Commands;
+using DailyRecord.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace DailyRecord.ViewModels
 {
-    class TextEditorUserControlViewModel : INotifyPropertyChanged
+    public class TextEditorUserControlViewModel : INotifyPropertyChanged
     {
+        private RichTextBox _richTextBox;
+
         #region 프로퍼티
-        private string _text;
-        public string Text
+        private bool _isBold;
+        public bool IsBold
         {
-            get => _text;
+            get => _isBold;
             set
             {
-                if (_text != value)
+                if (_isBold != value)
                 {
-                    _text = value;
-                    OnPropertyChanged(nameof(Text));
+                    _isBold = value;
+                    OnPropertyChanged(nameof(IsBold));
+                }
+            }
+        }
+
+        private bool _isItalic;
+        public bool IsItalic
+        {
+            get => _isItalic;
+            set
+            {
+                if (_isItalic != value)
+                {
+                    _isItalic = value;
+                    OnPropertyChanged(nameof(IsItalic));
+                }
+            }
+        }
+
+        private bool _isUnderline;
+        public bool IsUnderline
+        {
+            get => _isUnderline;
+            set
+            {
+                if (_isUnderline != value)
+                {
+                    _isUnderline = value;
+                    OnPropertyChanged(nameof(IsUnderline));
+                }
+            }
+        }
+
+        private bool _isStrike;
+        public bool IsStrike
+        {
+            get => _isStrike;
+            set
+            {
+                if (_isStrike != value)
+                {
+                    _isStrike = value;
+                    OnPropertyChanged(nameof(IsStrike));
+                }
+            }
+        }
+
+        private bool _isGridChecked;
+        public bool IsGridChecked
+        {
+            get => _isGridChecked;
+            set
+            {
+                if (_isGridChecked != value)
+                {
+                    _isGridChecked = value;
+                    OnPropertyChanged(nameof(IsGridChecked));
+                }
+            }
+        }
+
+        private bool _isColorChecked;
+        public bool IsColorChecked
+        {
+            get => _isColorChecked;
+            set
+            {
+                if (_isColorChecked != value)
+                {
+                    _isColorChecked = value;
+                    OnPropertyChanged(nameof(IsColorChecked));
                 }
             }
         }
@@ -86,22 +165,34 @@ namespace DailyRecord.ViewModels
                 }
             }
         }
+
+        private Brush _fontColor;
+        public Brush FontColor
+        {
+            get => _fontColor;
+            set
+            {
+                if (_fontColor != value)
+                {
+                    _fontColor = value;
+                    OnPropertyChanged(nameof(FontColor));
+                }
+            }
+        }
         #endregion
 
-        public TextEditorUserControlViewModel()
+        public TextEditorUserControlViewModel(RichTextBox richTextBox)
         {
+            _richTextBox = richTextBox;
             FontFamilies = new ObservableCollection<FontFamily>(Fonts.SystemFontFamilies);
             FontFamily = FontFamilies.FirstOrDefault();
             FontSizes = new ObservableCollection<double>(Constants.FONT_SIZES);
-            FontSize = FontSizes[3];
+            FontSize = FontSizes[5];
             BoldCommand = new RelayCommand(ExecuteBold);
             ItalicCommand = new RelayCommand(ExecuteItalic);
-            UnderlineCommand = new RelayCommand(ExecuteUnderline);
             StrikeCommand = new RelayCommand(ExecuteStrike);
             DecreaseFontCommand = new RelayCommand(ExecuteDecreaseFont);
             IncreaseFontCommand = new RelayCommand(ExecuteIncreaseFont);
-            FontColorCommand = new RelayCommand(ExecuteFontColor);
-            HighlightTextCommand = new RelayCommand(ExecuteHighlightText);
             ApplyFontFamilyCommand = new RelayCommand(ExecuteApplyFontFamily);
             ApplyFontSizeCommand = new RelayCommand(ExecuteApplyFontSize);
             AlignJustifyCommand = new RelayCommand(ExecuteAlignJustify);
@@ -109,177 +200,262 @@ namespace DailyRecord.ViewModels
             AlignCenterCommand = new RelayCommand(ExecuteAlignCenter);
             AlignRightCommand = new RelayCommand(ExecuteAlignRight);
             TextChangedCommand = new RelayCommand(ExecuteTextChanged);
+            UploadImageCommand = new RelayCommand(ExecuteUploadImage);
+            SelectColorCommand = new RelayCommand(ExecuteSelectColor);
+            PressTabCommand = new RelayCommand(ExecutePressTab);
+            SelectCellCommand = new RelayCommand(ExecuteSelectCell);
         }
 
         #region 커맨드
         public ICommand BoldCommand { get; private set; }
         private void ExecuteBold(object parameter)
         {
-            if (parameter is RichTextBox richTextBox) 
+            if (IsBold)
             {
-                EditingCommands.ToggleBold.Execute(null, richTextBox);
-                richTextBox.Focus();
+                _richTextBox.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
             }
+            else 
+            {
+                _richTextBox.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Regular);
+            }
+            _richTextBox.Focus();
         }
 
         public ICommand ItalicCommand { get; private set; }
         private void ExecuteItalic(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
+            if (IsItalic)
             {
-                EditingCommands.ToggleItalic.Execute(null, richTextBox);
-                richTextBox.Focus();
+                _richTextBox.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Italic);
             }
-        }
-
-        public ICommand UnderlineCommand { get; private set; }
-        private void ExecuteUnderline(object parameter)
-        {
-            if (parameter is RichTextBox richTextBox)
+            else 
             {
-                EditingCommands.ToggleUnderline.Execute(null, richTextBox);
-                richTextBox.Focus();
+                _richTextBox.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Normal);
             }
+            _richTextBox.Focus();
         }
 
         public ICommand StrikeCommand { get; private set; }
         private void ExecuteStrike(object parameter)
         {
-            // 실행할 로직을 구현합니다.
+            if (IsStrike)
+            {
+                _richTextBox.Selection.ApplyPropertyValue(TextBlock.TextDecorationsProperty, TextDecorations.Strikethrough);
+            }
+            else
+            {
+                _richTextBox.Selection.ApplyPropertyValue(TextBlock.TextDecorationsProperty, null);
+            }
+            _richTextBox.Focus();
         }
 
         public ICommand DecreaseFontCommand { get; private set; }
         private void ExecuteDecreaseFont(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
-            {
-                EditingCommands.DecreaseFontSize.Execute(null, richTextBox);
-                richTextBox.Focus();
-            }
+            EditingCommands.DecreaseFontSize.Execute(null, _richTextBox);
+            _richTextBox.Focus();
         }
 
         public ICommand IncreaseFontCommand { get; private set; }
         private void ExecuteIncreaseFont(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
-            {
-                EditingCommands.IncreaseFontSize.Execute(null, richTextBox);
-                richTextBox.Focus();
-            }
-        }
-
-        public ICommand FontColorCommand { get; private set; }
-        private void ExecuteFontColor(object parameter)
-        {
-        }
-
-        public ICommand HighlightTextCommand { get; private set; }
-        private void ExecuteHighlightText(object parameter)
-        {
-            // 실행할 로직을 구현합니다.
+            EditingCommands.IncreaseFontSize.Execute(null, _richTextBox);
+            _richTextBox.Focus();
         }
 
         public ICommand AlignJustifyCommand { get; private set; }
         private void ExecuteAlignJustify(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
-            {
-                EditingCommands.AlignJustify.Execute(null, richTextBox);
-                richTextBox.Focus();
-            }
+            EditingCommands.AlignJustify.Execute(null, _richTextBox);
+            _richTextBox.Focus();
         }
 
         public ICommand AlignLeftCommand { get; private set; }
         private void ExecuteAlignLeft(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
-            {
-                EditingCommands.AlignLeft.Execute(null, richTextBox);
-                richTextBox.Focus();
-            }
+            EditingCommands.AlignLeft.Execute(null, _richTextBox);
+            _richTextBox.Focus();
         }
 
         public ICommand AlignCenterCommand { get; private set; }
         private void ExecuteAlignCenter(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
-            {
-                EditingCommands.AlignCenter.Execute(null, richTextBox);
-                richTextBox.Focus();
-            }
+            EditingCommands.AlignCenter.Execute(null, _richTextBox);
+            _richTextBox.Focus();
         }
 
         public ICommand AlignRightCommand { get; private set; }
         private void ExecuteAlignRight(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
-            {
-                EditingCommands.AlignRight.Execute(null, richTextBox);
-                richTextBox.Focus();
-            }
+            EditingCommands.AlignRight.Execute(null, _richTextBox);
+            _richTextBox.Focus();
         }
 
         public ICommand ApplyFontFamilyCommand { get; private set; }
         private void ExecuteApplyFontFamily(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
+            TextSelection selection = _richTextBox.Selection;
+
+            if (selection.IsEmpty)
             {
-                TextSelection selection = richTextBox.Selection;
-
-                if (selection.IsEmpty)
-                {
-                    richTextBox.Focus();
-                    return;
-                }
-
-                selection.ApplyPropertyValue(TextElement.FontFamilyProperty, FontFamily);
-                richTextBox.Focus();
+                _richTextBox.Focus();
+                return;
             }
+
+            selection.ApplyPropertyValue(TextElement.FontFamilyProperty, FontFamily);
+            _richTextBox.Focus();
         }
 
         public ICommand ApplyFontSizeCommand { get; private set; }
         private void ExecuteApplyFontSize(object parameter)
         {
-            if (parameter is RichTextBox richTextBox) 
+            TextSelection selection = _richTextBox.Selection;
+
+            if (selection.IsEmpty)
             {
-                TextSelection selection = richTextBox.Selection;
-
-                if (selection.IsEmpty) 
-                {
-                    richTextBox.Focus();
-                    return;
-                }
-
-                selection.ApplyPropertyValue(TextElement.FontSizeProperty, FontSize);
+                _richTextBox.Focus();
+                return;
             }
+
+            selection.ApplyPropertyValue(TextElement.FontSizeProperty, FontSize);
         }
 
         public ICommand TextChangedCommand { get; private set; }
         private void ExecuteTextChanged(object parameter)
         {
-            if (parameter is RichTextBox richTextBox)
+            TextPointer pointer = _richTextBox.CaretPosition;
+
+            if (pointer.GetPointerContext(LogicalDirection.Backward) == TextPointerContext.Text)
             {
-                richTextBox.Selection.ApplyPropertyValue(TextElement.FontFamilyProperty, FontFamily);
-                richTextBox.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, FontSize);
+                TextPointer stringStart = pointer.GetPositionAtOffset(-1, LogicalDirection.Backward);
+                TextPointer stringEnd = pointer.GetPositionAtOffset(0, LogicalDirection.Forward);
+                var range = new TextRange(stringStart, stringEnd);
+                range.ApplyPropertyValue(TextElement.FontFamilyProperty, FontFamily);
+                range.ApplyPropertyValue(TextElement.FontSizeProperty, FontSize);
             }
         }
 
-        public ICommand ImageUploadCommand { get; private set; }
-        private void ExecuteImageUpload(object parameter)
+        public ICommand UploadImageCommand { get; private set; }
+        private void ExecuteUploadImage(object parameter)
         {
-            // 실행할 로직을 구현합니다.
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "이미지파일(*.png;*.jpg;*.gif)|*.png;*.jpg;*.jpeg;*.gif";
+            
+            if (openFileDialog.ShowDialog() == false)
+            {
+                return;
+            }
+
+            using (var memoryStream = new MemoryStream())
+            using (var fileStream = new FileStream(openFileDialog.FileName, FileMode.Open))
+            {
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = fileStream;
+                bitmapImage.EndInit();
+
+                var encoder = new JpegBitmapEncoder();
+                encoder.QualityLevel = 90;
+                encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+                encoder.Save(memoryStream);
+
+                while (memoryStream.Length > 300000)
+                {
+                    encoder.QualityLevel -= 10;
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    encoder.Save(memoryStream);
+
+                    if (encoder.QualityLevel < 10)
+                    {
+                        return;
+                    }
+                }
+
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                var compressedBitmapImage = new BitmapImage();
+                compressedBitmapImage.BeginInit();
+                compressedBitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                compressedBitmapImage.StreamSource = memoryStream;
+                compressedBitmapImage.EndInit();
+
+                var inlineUIContainer = new InlineUIContainer();
+                inlineUIContainer.Child = new Image()
+                {
+                    Source = compressedBitmapImage,
+                    Width = compressedBitmapImage.PixelWidth,
+                    Height = compressedBitmapImage.PixelHeight
+                };
+
+                var paragraph = new Paragraph();
+                paragraph.Inlines.Add(inlineUIContainer);
+                _richTextBox.Document.Blocks.Add(paragraph);
+                _richTextBox.Focus();
+            }
         }
 
-        public ICommand CreateGridCommand { get; private set; }
-        private void ExecuteCreateGrid(object parameter)
+        public ICommand SelectColorCommand { get; private set; }
+        private void ExecuteSelectColor(object parameter)
         {
-            // 실행할 로직을 구현합니다.
+            if (parameter is Brush brush)
+            {
+                IsColorChecked = false;
+                FontColor = brush;
+                _richTextBox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, FontColor);
+                _richTextBox.Focus();
+            }
         }
 
-        public ICommand HyperLinkCommand { get; private set; }
-        private void ExecuteHyperLink(object parameter)
+        public ICommand SelectCellCommand { get; private set; }
+        private void ExecuteSelectCell(object parameter)
         {
-            // 실행할 로직을 구현합니다.
+            if (parameter is GridButton button)
+            {
+                IsGridChecked = false;
+
+                Table table = new Table();
+
+                for (int col = 0; col < button.Column; col++)
+                {
+                    table.Columns.Add(new TableColumn());
+                }
+
+                TableRowGroup rowGroup = new TableRowGroup();
+
+                for (int row = 0; row < button.Row; row++)
+                {
+                    TableRow dataRow = new TableRow();
+
+                    for (int col = 0; col < button.Column; col++)
+                    {
+                        dataRow.Cells.Add(new TableCell(new Paragraph()));
+                    }
+
+                    rowGroup.Rows.Add(dataRow);
+                }
+
+                table.RowGroups.Add(rowGroup);
+                table.CellSpacing = 1;
+                table.BorderBrush = Brushes.DarkGray;
+                table.BorderThickness = new Thickness(0.5);
+
+                foreach (TableRow row in table.RowGroups[0].Rows)
+                {
+                    foreach (TableCell cell in row.Cells)
+                    {
+                        cell.BorderBrush = Brushes.Black;
+                        cell.BorderThickness = new Thickness(1);
+                    }
+                }
+
+                _richTextBox.Document.Blocks.Add(table);
+                _richTextBox.Focus();
+            }
+        }
+
+        public ICommand PressTabCommand { get; private set; }
+        private void ExecutePressTab(object parameter)
+        {
+            _richTextBox.CaretPosition.InsertTextInRun("\t");
         }
         #endregion
 

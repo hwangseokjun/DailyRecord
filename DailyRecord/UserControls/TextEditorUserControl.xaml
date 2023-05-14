@@ -9,9 +9,6 @@
              xmlns:ViewModels="clr-namespace:DailyRecord.ViewModels" x:Class="DailyRecord.UserControls.TextEditorUserControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.DataContext>
-        <ViewModels:TextEditorUserControlViewModel/>
-    </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
@@ -21,44 +18,40 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Row="1" CornerRadius="5" BorderBrush="DarkGray" BorderThickness="0.5" Background="White" Margin="3,0,1,0">
-            <RichTextBox x:Name="richTextBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}" FocusVisualStyle="{x:Null}" BorderBrush="{x:Null}" Padding="4" BorderThickness="0">
+            <RichTextBox x:Name="richTextBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}" FocusVisualStyle="{x:Null}" BorderBrush="{x:Null}" Padding="8,10,8,4" BorderThickness="0">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="TextChanged">
-                        <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding ElementName=richTextBox}"/>
+                        <i:InvokeCommandAction Command="{Binding TextChangedCommand}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <FlowDocument>
-                    <Paragraph>
-                        <Run Text="RichTextBox"/>
-                    </Paragraph>
-                </FlowDocument>
+                <RichTextBox.InputBindings>
+                    <KeyBinding Key="Tab" Command="{Binding PressTabCommand}"/>
+                    <KeyBinding Key="B" Modifiers="Ctrl" Command="{Binding BoldCommand}"/>
+                    <KeyBinding Key="I" Modifiers="Ctrl" Command="{Binding ItalicCommand}"/>
+                    <KeyBinding Key="OemOpenBrackets" Modifiers="Ctrl" Command="{Binding DecreaseFontCommand}"/>
+                    <KeyBinding Key="OemCloseBrackets" Modifiers="Ctrl" Command="{Binding IncreaseFontCommand}"/>
+                </RichTextBox.InputBindings>
             </RichTextBox>
         </Border>
-        <ToolBar HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0">
-            <ToggleButton Command="{Binding BoldCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=richTextBox, Mode=OneWay}">
+        <ToolBar HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" >
+            <ToggleButton Command="{Binding BoldCommand, Mode=OneWay}" IsChecked="{Binding IsBold}">
                 <Image Source="/Resources/Bold_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </ToggleButton>
-            <ToggleButton Command="{Binding ItalicCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=richTextBox, Mode=OneWay}">
+            <ToggleButton Command="{Binding ItalicCommand, Mode=OneWay}" IsChecked="{Binding IsItalic}">
                 <Image Source="/Resources/Italic_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </ToggleButton>
-            <ToggleButton Command="{Binding UnderlineCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=richTextBox, Mode=OneWay}">
-                <Image Source="/Resources/Underline_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </ToggleButton>
-            <ToggleButton Command="{Binding StrikeCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=richTextBox, Mode=OneWay}">
+            <ToggleButton Command="{Binding StrikeCommand, Mode=OneWay}" IsChecked="{Binding IsStrike}">
                 <Image Source="/Resources/StrikeThrough_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </ToggleButton>
             <Separator Margin="4,2,4,2"/>
-            <Button Command="{Binding DecreaseFontCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=richTextBox, Mode=OneWay}">
+            <Button Command="{Binding DecreaseFontCommand, Mode=OneWay}">
                 <Image Source="/Resources/DecreaseFontSize_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
-            <Button Command="{Binding IncreaseFontCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=fontColorPopup, Mode=OneWay}">
+            <Button Command="{Binding IncreaseFontCommand, Mode=OneWay}">
                 <Image Source="/Resources/IncreaseFontSize_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
-            <ToggleButton x:Name="fontColorButton" Command="{Binding FontColorCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=fontColorPopup}">
+            <ToggleButton x:Name="fontColorButton" IsChecked="{Binding IsColorChecked, Mode=TwoWay}">
                 <Image Source="/Resources/FontColor_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </ToggleButton>
-            <ToggleButton x:Name="highlightTextButton" Command="{Binding HighlightTextCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=fontColorPopup}">
-                <Image Source="/Resources/HighlightText_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </ToggleButton>
             <Separator Margin="4,2,4,2"/>
             <ComboBox Width="100" Margin="0,0,4,0" ItemsSource="{Binding FontFamilies}" SelectedItem="{Binding FontFamily}" Height="20">
@@ -69,50 +62,50 @@
                 </ComboBox.ItemTemplate>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding ApplyFontFamilyCommand}" CommandParameter="{Binding ElementName=richTextBox}"/>
+                        <i:InvokeCommandAction Command="{Binding ApplyFontFamilyCommand}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ComboBox>
             <ComboBox Width="60" Height="20" ItemsSource="{Binding FontSizes}" SelectedItem="{Binding FontSize}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding ApplyFontSizeCommand}" CommandParameter="{Binding ElementName=richTextBox}"/>
+                        <i:InvokeCommandAction Command="{Binding ApplyFontSizeCommand}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ComboBox>
             <Separator Margin="4,2,4,2"/>
-            <Button Command="{Binding AlignJustifyCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=richTextBox, Mode=OneWay}">
+            <Button Command="{Binding AlignJustifyCommand, Mode=OneWay}">
                 <Image Source="/Resources/AlignHorizontalStretch_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
-            <Button Command="{Binding AlignLeftCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=richTextBox, Mode=OneWay}">
+            <Button Command="{Binding AlignLeftCommand, Mode=OneWay}">
                 <Image Source="/Resources/AlignLeft_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
-            <Button Command="{Binding AlignCenterCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=richTextBox, Mode=OneWay}">
+            <Button Command="{Binding AlignCenterCommand, Mode=OneWay}">
                 <Image Source="/Resources/AlignCenter_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
-            <Button Command="{Binding AlignRightCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=richTextBox, Mode=OneWay}">
+            <Button Command="{Binding AlignRightCommand, Mode=OneWay}">
                 <Image Source="/Resources/AlignRight_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
             <Separator Margin="4,2,4,2"/>
-            <Button Command="{Binding ImageUploadCommand, Mode=OneWay}">
+            <Button Command="{Binding UploadImageCommand, Mode=OneWay}">
                 <Image Source="/Resources/Image_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
-            <Button Command="{Binding CreateGridCommand, Mode=OneWay}">
+            <ToggleButton x:Name="gridButton" IsChecked="{Binding IsGridChecked, Mode=TwoWay}">
                 <Image Source="/Resources/Table_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Button>
-            <Button Command="{Binding HyperLinkCommand, Mode=OneWay}">
-                <Image Source="/Resources/HyperLink_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </ToggleButton>
+            <Button>
+                <Image Source="/Resources/CodeEdit_16x.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Button>
         </ToolBar>
-        <Popup x:Name="fontColorPopup" PlacementTarget="{Binding ElementName=fontColorButton}" Placement="Bottom" 
+        <Popup PlacementTarget="{Binding ElementName=fontColorButton}" Placement="Bottom" 
                IsOpen="{Binding ElementName=fontColorButton, Path=IsChecked, Mode=TwoWay}"
                StaysOpen="{Binding ElementName=fontColorButton, Path=IsMouseOver}">
             <local:ColorPickerUserControl Height="150" Width="160"/>
         </Popup>
-        <Popup x:Name="highlightTextPopup" PlacementTarget="{Binding ElementName=highlightTextButton}" Placement="Bottom"
-               IsOpen="{Binding ElementName=highlightTextButton, Path=IsChecked, Mode=TwoWay}"
-               StaysOpen="{Binding ElementName=highlightTextButton, Path=IsMouseOver}">
-            <local:ColorPickerUserControl Height="150" Width="160"/>
+        <Popup PlacementTarget="{Binding ElementName=gridButton}" Placement="Bottom"
+               IsOpen="{Binding ElementName=gridButton, Path=IsChecked, Mode=TwoWay}"
+               StaysOpen="{Binding ElementName=gridButton, Path=IsMouseOver}">
+            <local:GridPickerUserControl Height="145" Width="160"/>
         </Popup>
     </Grid>
 </UserControl>

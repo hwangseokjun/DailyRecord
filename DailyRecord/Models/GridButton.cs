@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DailyRecord.Models
 {
-    public class Work
+    public class GridButton
     {
-        public int Id { get; set; }
-        public DateTime DateTime { get; set; }
-        public bool IsCompleted { get; set; }
+        public string Tag { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
     }
 }

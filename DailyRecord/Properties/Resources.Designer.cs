@@ -113,6 +113,26 @@ namespace DailyRecord.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap CodeDefinitionWindow_16x {
+            get {
+                object obj = ResourceManager.GetObject("CodeDefinitionWindow_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap CodeEdit_16x {
+            get {
+                object obj = ResourceManager.GetObject("CodeEdit_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap DecreaseFontSize_16x {
             get {
                 object obj = ResourceManager.GetObject("DecreaseFontSize_16x", resourceCulture);
@@ -136,6 +156,16 @@ namespace DailyRecord.Properties {
         internal static System.Drawing.Bitmap HighlightText_16x {
             get {
                 object obj = ResourceManager.GetObject("HighlightText_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap HTMLEndTag_16x {
+            get {
+                object obj = ResourceManager.GetObject("HTMLEndTag_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DailyRecord.TypeHandlers;
+using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -21,6 +23,12 @@ namespace DailyRecord
              * 그러나, 이 옵션을 사용하면 복잡한 애니메이션을 사용하기 어려워진다.
             */
             Process.GetCurrentProcess().ProcessorAffinity = new IntPtr(1);
+
+            #region Dapper에 TypeHandler 등록
+            SqlMapper.AddTypeHandler(new WeatherTypeHandler());
+            SqlMapper.AddTypeHandler(new IsoDateTimeHandler());
+            #endregion
+
             base.OnStartup(e);
         }
     }

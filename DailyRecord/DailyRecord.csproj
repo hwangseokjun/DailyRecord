@@ -40,6 +40,9 @@
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper.Contrib, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.Contrib.2.0.78\lib\net461\Dapper.Contrib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -67,11 +70,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Business\Service.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="DataAccess\Repository.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\DateTreeItem.cs" />
+    <Compile Include="Models\DateTreePath.cs" />
+    <Compile Include="Models\GridButton.cs" />
+    <Compile Include="TypeHandlers\IsoDateTimeTypeHandler.cs" />
+    <Compile Include="TypeHandlers\WeatherTypeHandler.cs" />
     <Compile Include="UserControls\ColorPickerUserControl.xaml.cs">
       <DependentUpon>ColorPickerUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GridPickerUserControl.xaml.cs">
+      <DependentUpon>GridPickerUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RegisterUserControl.xaml.cs">
+      <DependentUpon>RegisterUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\TextEditorUserControl.xaml.cs">
       <DependentUpon>TextEditorUserControl.xaml</DependentUpon>
@@ -79,7 +95,7 @@
     <Compile Include="UserControls\TreeUserControl.xaml.cs">
       <DependentUpon>TreeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ColorPickerUserControlViewModel.cs" />
+    <Compile Include="ViewModels\GridPickerUserControlViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\TextEditorUserControlViewModel.cs" />
     <Compile Include="App.xaml.cs">
@@ -91,6 +107,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="UserControls\ColorPickerUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GridPickerUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\RegisterUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -138,7 +162,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataAccess\" />
     <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +208,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\AlignHorizontalStretch_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HTMLEndTag_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CodeDefinitionWindow_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CodeEdit_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
