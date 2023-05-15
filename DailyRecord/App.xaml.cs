@@ -1,5 +1,10 @@
-﻿using DailyRecord.TypeHandlers;
+﻿using DailyRecord.Business;
+using DailyRecord.DataAccess;
+using DailyRecord.TypeHandlers;
+using DailyRecord.ViewModels;
+using DailyRecord.Views;
 using Dapper;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,6 +21,39 @@ namespace DailyRecord
     /// </summary>
     public partial class App : Application
     {
+        public new static App Current => (App)Application.Current;
+        public IServiceProvider Services { get; }
+
+        public App() 
+        {
+            Services = ConfigureServices();
+            var mainWindow = Services.GetRequiredService<MainWindow>();
+            mainWindow.DataContext = Services.GetRequiredService<IDataService>();
+            mainWindow.Show();
+        }
+
+        private IServiceProvider ConfigureServices() 
+        {
+            var services = new ServiceCollection();
+
+            // DataAcess
+            services.AddSingleton<IRepository, MockRepository>();
+
+            // Business
+            services.AddSingleton<IDataService, Service>();
+
+            // ViewModel
+            services.AddSingleton<MainWindowViewModel>();
+
+            // View
+            services.AddSingleton(s => new MainWindow
+            {
+                DataContext = s.GetRequiredService<MainWindowViewModel>()
+            });
+
+            return services.BuildServiceProvider();
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             /* 
@@ -28,6 +66,8 @@ namespace DailyRecord
             SqlMapper.AddTypeHandler(new WeatherTypeHandler());
             SqlMapper.AddTypeHandler(new IsoDateTimeHandler());
             #endregion
+
+            var repository = Services.GetRequiredService<IRepository>();
 
             base.OnStartup(e);
         }

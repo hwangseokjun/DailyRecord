@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DailyRecord.DataAccess
 {
-    public class Repository
+    public class Repository : IRepository
     {
         private readonly string _connectionString;
 
@@ -30,9 +30,19 @@ namespace DailyRecord.DataAccess
             }
         }
 
-        public void Save() 
+        public DataModels.Month[] GetMonths(DataModels.Year year)
         {
-        
+            throw new NotImplementedException();
+        }
+
+        public DataModels.Record[] GetRecords(DataModels.Month month)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataModels.Year[] GetYears()
+        {
+            throw new NotImplementedException();
         }
     }
 }

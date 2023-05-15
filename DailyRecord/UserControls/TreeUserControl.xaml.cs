@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DailyRecord.DataAccess;
+using DailyRecord.DataModels;
+using DailyRecord.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +26,7 @@ namespace DailyRecord.UserControls
         public TreeUserControl()
         {
             InitializeComponent();
+            DataContext = new YearMonthItemViewModel((MockRepository)App.Current.Services.GetService(typeof(IRepository)));
         }
     }
 }

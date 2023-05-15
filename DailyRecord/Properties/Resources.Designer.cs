@@ -143,6 +143,26 @@ namespace DailyRecord.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap Document_16x {
+            get {
+                object obj = ResourceManager.GetObject("Document_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap FolderClosed_16x {
+            get {
+                object obj = ResourceManager.GetObject("FolderClosed_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap FontColor_16x {
             get {
                 object obj = ResourceManager.GetObject("FontColor_16x", resourceCulture);

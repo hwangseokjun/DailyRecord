@@ -21,7 +21,7 @@ using System.Windows.Media.Imaging;
 
 namespace DailyRecord.ViewModels
 {
-    public class TextEditorUserControlViewModel : INotifyPropertyChanged
+    public class TextEditorUserControlViewModel : ViewModelBase
     {
         private RichTextBox _richTextBox;
 
@@ -458,11 +458,5 @@ namespace DailyRecord.ViewModels
             _richTextBox.CaretPosition.InsertTextInRun("\t");
         }
         #endregion
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

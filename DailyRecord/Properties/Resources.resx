@@ -142,6 +142,12 @@
   <data name="DecreaseFontSize_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DecreaseFontSize_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Document_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Document_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FolderClosed_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FolderClosed_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="FontColor_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FontColor_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

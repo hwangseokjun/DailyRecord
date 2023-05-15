@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DailyRecord.Business
 {
-    public class Service
+    public class Service : IDataService
     {
         private readonly Repository _repository = new Repository();
 

@@ -7,19 +7,16 @@
         xmlns:UserControls="clr-namespace:DailyRecord.UserControls" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:ViewModels="clr-namespace:DailyRecord.ViewModels" x:Class="DailyRecord.Views.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="900" Width="1600">
-    <Window.DataContext>
-        <ViewModels:MainWindowViewModel/>
-    </Window.DataContext>
     <Grid>
 
-        <UserControls:TextEditorUserControl HorizontalAlignment="Left" Height="483" Margin="875,281,0,0" VerticalAlignment="Top" Width="670"/>
-        <UserControls:TreeUserControl HorizontalAlignment="Left" Height="325" Margin="92,316,0,0" VerticalAlignment="Top" Width="271"/>
-        <ToolBar HorizontalAlignment="Left" Height="36" Margin="875,240,0,0" VerticalAlignment="Top" Width="670">
+        <UserControls:TextEditorUserControl HorizontalAlignment="Left" Height="483" Margin="596,329,0,0" VerticalAlignment="Top" Width="670"/>
+        <UserControls:TreeUserControl HorizontalAlignment="Left" Height="398" Margin="50,414,0,0" VerticalAlignment="Top" Width="409"/>
+        <ToolBar HorizontalAlignment="Left" Height="36" Margin="596,288,0,0" VerticalAlignment="Top" Width="670">
 
             <TextBox Grid.Column="0"/>
             <ComboBox Grid.Column="1"/>
             <ComboBox Grid.Column="2"/>
         </ToolBar>
-        <Button Content="TEST" Command="{Binding TESTCommand}" HorizontalAlignment="Left" Margin="506,618,0,0" VerticalAlignment="Top" Width="75"/>
+        <Calendar HorizontalAlignment="Left" Margin="98,111,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

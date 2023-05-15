@@ -20,16 +20,15 @@ namespace DailyRecord.Models
         Typhoon
     }
 
-    [Table("record")]
     public class Record
     {
-        [Key]
         public int Id { get; set; }
+        public string Path { get; set; }
+        public bool IsFolder { get; set; }
         public Weather? Weather { get; set; }
         public DateTime Date { get; set; }
         public string Contents { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? ModifedAt { get; set; }
-        public int? CategoryId { get; set; }
     }
 }
