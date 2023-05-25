@@ -1,9 +1,8 @@
-﻿using DailyRecord.Business;
-using DailyRecord.DataAccess;
-using DailyRecord.TypeHandlers;
+﻿using DailyRecord.Services;
+using DailyRecord.Stores;
+using DailyRecord.UserControls;
 using DailyRecord.ViewModels;
 using DailyRecord.Views;
-using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -22,37 +21,49 @@ namespace DailyRecord
     public partial class App : Application
     {
         public new static App Current => (App)Application.Current;
-        public IServiceProvider Services { get; }
 
         public App() 
         {
             Services = ConfigureServices();
-            var mainWindow = Services.GetRequiredService<MainWindow>();
-            mainWindow.DataContext = Services.GetRequiredService<IDataService>();
-            mainWindow.Show();
+
+            var mainView = Services.GetRequiredService<MainView>();
+            mainView.Show();
         }
 
-        private IServiceProvider ConfigureServices() 
+        private IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
 
-            // DataAcess
-            services.AddSingleton<IRepository, MockRepository>();
+            // Stores
+            services.AddSingleton<MainNavigationStore>();
 
-            // Business
-            services.AddSingleton<IDataService, Service>();
+            // Services
+            services.AddSingleton<INavigationService, NavigationService>();
 
-            // ViewModel
-            services.AddSingleton<MainWindowViewModel>();
+            // ViewModels
+            services.AddSingleton<DiaryViewModel>();
+            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<RegisterViewModel>();
+            services.AddSingleton<StatisticsViewModel>();
+            services.AddSingleton<TasksViewModel>();
+            services.AddSingleton<TextEditorViewModel>();
 
-            // View
-            services.AddSingleton(s => new MainWindow
-            {
-                DataContext = s.GetRequiredService<MainWindowViewModel>()
+            // Views
+            services.AddSingleton(s => new MainView 
+            { 
+                DataContext = s.GetRequiredService<MainViewModel>()
+            });
+
+            // UserControls
+            services.AddSingleton(s => new Register 
+            { 
+                DataContext = s.GetRequiredService<RegisterViewModel>()
             });
 
             return services.BuildServiceProvider();
         }
+
+        public IServiceProvider Services { get; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -61,14 +72,6 @@ namespace DailyRecord
              * 그러나, 이 옵션을 사용하면 복잡한 애니메이션을 사용하기 어려워진다.
             */
             Process.GetCurrentProcess().ProcessorAffinity = new IntPtr(1);
-
-            #region Dapper에 TypeHandler 등록
-            SqlMapper.AddTypeHandler(new WeatherTypeHandler());
-            SqlMapper.AddTypeHandler(new IsoDateTimeHandler());
-            #endregion
-
-            var repository = Services.GetRequiredService<IRepository>();
-
             base.OnStartup(e);
         }
     }

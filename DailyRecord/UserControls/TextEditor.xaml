@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="DailyRecord.UserControls.TextEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DailyRecord.UserControls"
+             xmlns:vm="clr-namespace:DailyRecord.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <!-- DataContext -->
+    <UserControl.DataContext>
+        <vm:TextEditorViewModel/>
+    </UserControl.DataContext>
+    
+    <!-- Resources-->
+    <UserControl.Resources>
+        <!-- Style-->
+        <Style TargetType="{x:Type ToggleButton}" x:Key="ToolbarToggleButton">
+            <Setter Property="Padding" Value="3 0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="{x:Type Button}" x:Key="ToolbarButton">
+            <Setter Property="Padding" Value="3 0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="{x:Type ComboBox}" x:Key="ToolbarComboBox">
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <!-- Body -->
+    <StackPanel x:Name="parent">
+        <Border Background="#003F5C" Height="30">
+            <StackPanel Orientation="Horizontal">
+
+                <ToggleButton x:Name="boldToggleButton" 
+                              Style="{StaticResource ToolbarToggleButton}"
+                              Click="BoldButton_Click">
+                    <Image Source="/Resources/Bold_16x.png" Stretch="None"/>
+                </ToggleButton>
+
+                <ToggleButton x:Name="italicToggleButton"
+                              Style="{StaticResource ToolbarToggleButton}"
+                              Click="ItalicButton_Click">
+                    <Image Source="/Resources/Italic_16x.png" Stretch="None"/>
+                </ToggleButton>
+
+                <ToggleButton x:Name="underlineToggleButton"
+                              Style="{StaticResource ToolbarToggleButton}"
+                              Click="UnderlineButton_Click">
+                    <Image Source="/Resources/Underline_16x.png" Stretch="None"/>
+                </ToggleButton>
+
+                <Button Style="{StaticResource ToolbarButton}"
+                        Click="DecreaseButton_Click">
+                    <Image Source="/Resources/DecreaseFontSize_16x.png" Stretch="None"/>
+                </Button>
+
+                <Button Style="{StaticResource ToolbarButton}"
+                        Click="IncreaseButton_Click">
+                    <Image Source="/Resources/IncreaseFontSize_16x.png" Stretch="None"/>
+                </Button>
+
+                <Button Style="{StaticResource ToolbarButton}">
+                    <Image Source="/Resources/FontColor_16x.png" Stretch="None"/>
+                </Button>
+
+                <Button Style="{StaticResource ToolbarButton}">
+                    <Image Source="/Resources/HighlightText_16x.png" Stretch="None"/>
+                </Button>
+                
+                <ComboBox x:Name="fontFamilyComboBox"
+                          ItemsSource="{Binding FontFamilies}"
+                          SelectedItem="{Binding SelectedFontFamily}"
+                          Style="{StaticResource ToolbarComboBox}" 
+                          SelectionChanged="FontFamilyComboBox_SelectionChanged"/>
+
+                <ComboBox x:Name="fontSizeComboBox" 
+                          ItemsSource="{Binding FontSizes}"
+                          SelectedItem="{Binding SelectedFontSize}"
+                          Style="{StaticResource ToolbarComboBox}" 
+                          SelectionChanged="FontSizeComboBox_SelectionChanged"/>
+                
+                <ToggleButton Style="{StaticResource ToolbarToggleButton}">
+                    <Image Source="/Resources/AlignHorizontalStretch_16x.png" Stretch="None"/>
+                </ToggleButton>
+                
+                <ToggleButton Style="{StaticResource ToolbarToggleButton}">
+                    <Image Source="/Resources/AlignLeft_16x.png" Stretch="None"/>
+                </ToggleButton>
+
+                <ToggleButton Style="{StaticResource ToolbarToggleButton}">
+                    <Image Source="/Resources/AlignCenter_16x.png" Stretch="None"/>
+                </ToggleButton>
+
+                <ToggleButton Style="{StaticResource ToolbarToggleButton}">
+                    <Image Source="/Resources/AlignRight_16x.png" Stretch="None"/>
+                </ToggleButton>
+
+                <Button Style="{StaticResource ToolbarButton}">
+                    <Image Source="/Resources/Image_16x.png" Stretch="None"/>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <RichTextBox x:Name="richTextBox" 
+                     Width="{Binding ActualWidth, ElementName=parent}"
+                     Height="{Binding ActualHeight, ElementName=parent}"
+                     TextChanged="RichTextBox_TextChanged" 
+                     SelectionChanged="RichTextBox_SelectionChanged"/>
+    </StackPanel>
+</UserControl>
